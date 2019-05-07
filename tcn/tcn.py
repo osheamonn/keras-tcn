@@ -97,13 +97,15 @@ class TCN:
         self.padding = padding
 
         if padding != 'causal' and padding != 'same':
-            raise ValueError("Only 'causal' or 'same' padding are compatible for this layer.")
+            raise ValueError(
+                "Only 'causal' or 'same' padding are compatible for this layer.")
 
         if not isinstance(nb_filters, int):
             print('An interface change occurred after the version 2.1.2.')
             print('Before: tcn.TCN(x, return_sequences=False, ...)')
             print('Now should be: tcn.TCN(return_sequences=False, ...)(x)')
-            print('The alternative is to downgrade to 2.1.2 (pip install keras-tcn==2.1.2).')
+            print(
+                'The alternative is to downgrade to 2.1.2 (pip install keras-tcn==2.1.2).')
             raise Exception()
 
     def __call__(self, inputs):
@@ -202,7 +204,8 @@ def compiled_tcn(num_feat,  # type: int
             y_pred_labels = K.cast(y_pred_labels, K.floatx())
             return K.cast(K.equal(y_true, y_pred_labels), K.floatx())
 
-        model.compile(get_opt(), loss='sparse_categorical_crossentropy', metrics=[accuracy])
+        model.compile(
+            get_opt(), loss='sparse_categorical_crossentropy', metrics=[accuracy])
     else:
         # regression
         x = Dense(1)(x)
@@ -210,6 +213,6 @@ def compiled_tcn(num_feat,  # type: int
         output_layer = x
         model = Model(input_layer, output_layer)
         model.compile(get_opt(), loss='mean_squared_error')
-    print(f'model.x = {input_layer.shape}')
-    print(f'model.y = {output_layer.shape}')
+    print('model.x = {}'.format(input_layer.shape))
+    print('model.y = {}'.format(output_layer.shape))
     return model
